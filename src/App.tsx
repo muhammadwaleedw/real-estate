@@ -24,8 +24,117 @@ import {
   Twitter,
   Facebook,
   ArrowDown,
-  ArrowUp
+  ArrowUp,
+  MapPin,
+  Wifi,
+  Car,
+  Utensils,
+  Wind,
+  Cigarette,
+  Home as HomeIcon,
+  Users
 } from 'lucide-react';
+
+// --- Types ---
+interface Property {
+  id: string;
+  name: string;
+  price: string;
+  location: string;
+  rating: number;
+  beds: number;
+  baths: number;
+  sqft: number;
+  img: string;
+  gallery: string[];
+  description: string;
+  status: string;
+  mlsId: string;
+  type: string;
+  agent: {
+    name: string;
+    email: string;
+    img: string;
+  };
+}
+
+const properties: Property[] = [
+  { 
+    id: '1',
+    name: 'Veloura Residences', 
+    price: '$4,050', 
+    location: 'Miami, Florida, celinam delware 2098',
+    rating: 5.0,
+    beds: 3, 
+    baths: 2, 
+    sqft: 10000, 
+    img: 'https://picsum.photos/seed/prop1/1200/800',
+    gallery: [
+      'https://picsum.photos/seed/prop1/1200/800',
+      'https://picsum.photos/seed/prop1-2/800/600',
+      'https://picsum.photos/seed/prop1-3/800/600',
+    ],
+    description: 'Discover this modern 3-bedroom apartment located in the heart of the city, offering a perfect blend of comfort and convenience. Enjoy breathtaking skyline views, an open-concept kitchen, spacious living areas, and a private balcony ideal for relaxing evenings.',
+    status: 'For Sale',
+    mlsId: '0978347',
+    type: 'Single-Family Home',
+    agent: {
+      name: 'Alex Ripon',
+      email: 'example@gamil.com',
+      img: 'https://picsum.photos/seed/agent1/100/100'
+    }
+  },
+  { 
+    id: '2',
+    name: 'EcoSerene Haven Residences', 
+    price: '$350,000', 
+    location: 'Los Angeles, CA',
+    rating: 4.8,
+    beds: 3, 
+    baths: 2, 
+    sqft: 1400, 
+    img: 'https://picsum.photos/seed/prop2/1200/800',
+    gallery: [
+      'https://picsum.photos/seed/prop2/1200/800',
+      'https://picsum.photos/seed/prop2-2/800/600',
+      'https://picsum.photos/seed/prop2-3/800/600',
+    ],
+    description: 'A sustainable sanctuary blending modern architecture with lush natural surroundings for ultimate peace.',
+    status: 'For Sale',
+    mlsId: '0978348',
+    type: 'Single-Family Home',
+    agent: {
+      name: 'Sarah Jenkins',
+      email: 'sarah@example.com',
+      img: 'https://picsum.photos/seed/agent2/100/100'
+    }
+  },
+  { 
+    id: '3',
+    name: 'Luxe Haven Residences', 
+    price: '$420,000', 
+    location: 'New York, NY',
+    rating: 4.9,
+    beds: 4, 
+    baths: 2, 
+    sqft: 2000, 
+    img: 'https://picsum.photos/seed/prop3/1200/800',
+    gallery: [
+      'https://picsum.photos/seed/prop3/1200/800',
+      'https://picsum.photos/seed/prop3-2/800/600',
+      'https://picsum.photos/seed/prop3-3/800/600',
+    ],
+    description: 'Experience the pinnacle of luxury with panoramic views and world-class amenities in every corner.',
+    status: 'For Sale',
+    mlsId: '0978349',
+    type: 'Single-Family Home',
+    agent: {
+      name: 'Michael Chen',
+      email: 'michael@example.com',
+      img: 'https://picsum.photos/seed/agent3/100/100'
+    }
+  },
+];
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -98,7 +207,7 @@ const BackToTop = () => {
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ onHomeClick }: { onHomeClick: () => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -111,25 +220,28 @@ const Navbar = () => {
   return (
     <nav className={cn(
       "fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 md:px-12 lg:px-24 py-6",
-      isScrolled ? "bg-luxury-beige/80 backdrop-blur-lg py-4 shadow-sm" : "bg-transparent"
+      isScrolled ? "bg-white/80 backdrop-blur-lg py-4 shadow-sm" : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <div className="text-2xl font-bold tracking-tighter">Living</div>
+        <button onClick={onHomeClick} className="flex items-center space-x-2 text-2xl font-bold tracking-tighter">
+          <div className="w-8 h-8 bg-luxury-ink rounded-full flex items-center justify-center text-white">
+            <HomeIcon size={16} />
+          </div>
+          <span>Realnest</span>
+        </button>
         
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-10 text-sm font-medium uppercase tracking-widest opacity-70">
-          <a href="#" className="hover:opacity-100 transition-opacity">About Us</a>
-          <a href="#" className="hover:opacity-100 transition-opacity">Land For Sale</a>
-          <a href="#" className="hover:opacity-100 transition-opacity">Resources</a>
-          <a href="#" className="hover:opacity-100 transition-opacity">Contact Us</a>
+        <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
+          <button onClick={onHomeClick} className="hover:text-luxury-gray transition-colors">Home</button>
+          <a href="#" className="hover:text-luxury-gray transition-colors">About us</a>
+          <a href="#" className="hover:text-luxury-gray transition-colors">Property</a>
+          <a href="#" className="hover:text-luxury-gray transition-colors">Agents</a>
+          <a href="#" className="hover:text-luxury-gray transition-colors">Blog</a>
         </div>
 
         <div className="flex items-center space-x-6">
-          <button className="p-2 hover:bg-black/5 rounded-full transition-colors">
-            <Search size={20} />
-          </button>
           <button className="hidden sm:block bg-luxury-ink text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-opacity-90 transition-all">
-            Sign Up
+            Contact Us
           </button>
           <button 
             className="md:hidden p-2"
@@ -142,13 +254,14 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-luxury-beige border-t border-black/5 p-6 flex flex-col space-y-6 shadow-xl">
-          <a href="#" className="text-lg font-medium">About Us</a>
-          <a href="#" className="text-lg font-medium">Land For Sale</a>
-          <a href="#" className="text-lg font-medium">Resources</a>
-          <a href="#" className="text-lg font-medium">Contact Us</a>
+        <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-black/5 p-6 flex flex-col space-y-6 shadow-xl">
+          <button onClick={() => { onHomeClick(); setMobileMenuOpen(false); }} className="text-left text-lg font-medium">Home</button>
+          <a href="#" className="text-lg font-medium">About us</a>
+          <a href="#" className="text-lg font-medium">Property</a>
+          <a href="#" className="text-lg font-medium">Agents</a>
+          <a href="#" className="text-lg font-medium">Blog</a>
           <button className="bg-luxury-ink text-white w-full py-4 rounded-full font-medium">
-            Sign Up
+            Contact Us
           </button>
         </div>
       )}
@@ -156,9 +269,50 @@ const Navbar = () => {
   );
 };
 
+const heroSlides = [
+  {
+    title: "Etalon City Real Estate",
+    desc: "This premier development offers a range of high-end residential spaces designed with meticulous attention to detail.",
+    img: "https://picsum.photos/seed/modern-house-1/1920/1080"
+  },
+  {
+    title: "EcoSerene Haven Residences",
+    desc: "A sustainable sanctuary blending modern architecture with lush natural surroundings for ultimate peace.",
+    img: "https://picsum.photos/seed/prop1/1920/1080"
+  },
+  {
+    title: "Luxe Haven Residences",
+    desc: "Experience the pinnacle of luxury with panoramic views and world-class amenities in every corner.",
+    img: "https://picsum.photos/seed/prop2/1920/1080"
+  },
+  {
+    title: "Urban Oasis Apartments",
+    desc: "Modern living in the heart of the city, featuring contemporary design and unparalleled convenience.",
+    img: "https://picsum.photos/seed/prop3/1920/1080"
+  }
+];
+
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const nextSlide = () => {
+    const next = (currentSlide + 1) % heroSlides.length;
+    
+    gsap.to(slideRefs.current[currentSlide], {
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut"
+    });
+    
+    gsap.fromTo(slideRefs.current[next], 
+      { opacity: 0, scale: 1.1 },
+      { opacity: 1, scale: 1, duration: 1.5, ease: "power2.inOut" }
+    );
+    
+    setCurrentSlide(next);
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -171,87 +325,101 @@ const Hero = () => {
         ease: "power4.out",
       });
 
-      // Parallax + Zoom effect
-      gsap.to(imageRef.current, {
-        yPercent: 15,
-        scale: 1.1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
+      // Initial slide state
+      slideRefs.current.forEach((slide, i) => {
+        if (i !== 0) gsap.set(slide, { opacity: 0 });
       });
     }, heroRef);
 
-    return () => ctx.revert();
-  }, []);
+    const timer = setInterval(nextSlide, 6000);
+
+    return () => {
+      ctx.revert();
+      clearInterval(timer);
+    };
+  }, [currentSlide]);
 
   return (
     <section ref={heroRef} className="relative pt-32 pb-20 px-6 md:px-12 lg:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-end justify-between mb-12">
-          <div className="max-w-3xl">
-            <h1 className="hero-reveal text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight leading-[0.9] mb-8">
-              Discover <span className="italic font-light">Modern Homes</span> Tailored to Your Lifestyle
+          <div className="max-w-4xl">
+            <h1 className="hero-reveal font-medium tracking-tighter leading-[0.85] mb-12">
+              <span className="text-4xl md:text-6xl block opacity-60 mb-2">Discover</span>
+              <span className="text-8xl md:text-[11rem] lg:text-[14rem] italic font-light block -ml-1 md:-ml-3 mb-4">Modern</span>
+              <span className="text-4xl md:text-6xl block">Homes Tailored to</span>
+              <span className="text-4xl md:text-6xl block">Your Lifestyle</span>
             </h1>
             <div className="hero-reveal flex items-center space-x-4">
-              <div className="w-12 h-12 rounded-full border border-luxury-ink flex items-center justify-center animate-bounce">
-                <ArrowDown size={20} />
-              </div>
-              <p className="text-luxury-gray max-w-xs text-sm uppercase tracking-widest">
+              <button 
+                onClick={nextSlide}
+                className="w-16 h-16 rounded-full border border-luxury-ink flex items-center justify-center group hover:bg-luxury-ink hover:text-white transition-all duration-500"
+              >
+                <ArrowDown size={24} className="group-hover:translate-y-1 transition-transform" />
+              </button>
+              <p className="text-luxury-gray max-w-xs text-sm uppercase tracking-widest font-bold">
                 Explore our curated collection of architectural masterpieces.
               </p>
             </div>
           </div>
           
-          <div className="hero-reveal hidden lg:block bg-white p-6 rounded-[24px] shadow-xl shadow-black/5 max-w-xs mt-12 lg:mt-0">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="flex -space-x-2">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-luxury-sand overflow-hidden">
+          <div className="hero-reveal hidden lg:block glass p-8 rounded-[32px] shadow-2xl shadow-black/10 max-w-sm mt-12 lg:mt-0 relative z-10">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="w-12 h-12 rounded-full border-2 border-white/20 bg-luxury-sand overflow-hidden">
                     <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="user" referrerPolicy="no-referrer" />
                   </div>
                 ))}
               </div>
-              <div className="flex items-center space-x-1 text-xs font-bold">
+              <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full flex items-center space-x-1 text-xs font-bold">
                 <Star size={12} className="fill-yellow-400 text-yellow-400" />
                 <span>4.8 Rating</span>
               </div>
             </div>
-            <p className="text-sm text-luxury-gray italic">
-              "The most seamless property search experience I've ever had. Truly exceptional design."
+            <p className="text-base text-luxury-ink font-medium italic leading-relaxed">
+              "The most seamless property search experience I've ever had. Truly exceptional design and architectural vision."
             </p>
+            <div className="mt-4 text-[10px] uppercase tracking-widest font-bold opacity-40">Top Testimonial</div>
           </div>
         </div>
 
-        <div className="hero-reveal relative w-full h-[500px] md:h-[700px] rounded-[32px] overflow-hidden">
-          <img 
-            ref={imageRef}
-            src="https://picsum.photos/seed/modern-house-1/1920/1080" 
-            alt="Modern architectural home" 
-            className="w-full h-[120%] object-cover absolute top-[-10%] will-change-transform"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+        <div className="hero-reveal relative w-full h-[500px] md:h-[800px] rounded-[40px] overflow-hidden shadow-2xl">
+          {heroSlides.map((slide, i) => (
+            <div 
+              key={i}
+              ref={el => slideRefs.current[i] = el}
+              className="absolute inset-0 w-full h-full"
+            >
+              <img 
+                src={slide.img} 
+                alt={slide.title} 
+                className="w-full h-full object-cover will-change-transform"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              
+              <div className="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row items-end justify-between text-white">
+                <div className="glass p-8 rounded-[32px] max-w-md mb-6 md:mb-0">
+                  <h3 className="text-2xl font-medium mb-3">{slide.title}</h3>
+                  <p className="text-sm opacity-80 mb-6 leading-relaxed">
+                    {slide.desc}
+                  </p>
+                  <button className="flex items-center space-x-3 text-sm font-bold group">
+                    <span className="uppercase tracking-widest">See Detail</span>
+                    <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-luxury-ink transition-all">
+                      <ArrowRight size={16} />
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
           
-          <div className="absolute bottom-8 left-8 right-8 flex flex-col md:flex-row items-end justify-between text-white">
-            <div className="glass p-6 rounded-[24px] max-w-sm mb-6 md:mb-0">
-              <h3 className="text-xl font-medium mb-2">Etalon City Real Estate</h3>
-              <p className="text-sm opacity-80 mb-4">
-                This premier development offers a range of high-end residential spaces designed with meticulous attention to detail.
-              </p>
-              <button className="flex items-center space-x-2 text-sm font-bold group">
-                <span>See Detail</span>
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-            <div className="hidden md:flex items-center space-x-2 text-sm font-medium uppercase tracking-widest">
-              <span>01</span>
-              <div className="w-12 h-[1px] bg-white/50" />
-              <span className="opacity-50">04</span>
-            </div>
+          <div className="absolute bottom-12 right-12 hidden md:flex items-center space-x-4 text-sm font-bold uppercase tracking-[0.2em] text-white">
+            <span className="text-2xl">0{currentSlide + 1}</span>
+            <div className="w-16 h-[1px] bg-white/30" />
+            <span className="opacity-40">0{heroSlides.length}</span>
           </div>
         </div>
       </div>
@@ -443,7 +611,81 @@ const Showcase = () => {
   );
 };
 
+const testimonialSlides = [
+  {
+    name: "Gregg Bergstrom",
+    role: "Marketing Executive",
+    quote: "Working with Living was a fantastic experience from start to finish. They listened to exactly what I wanted, and within a few short weeks, I found my dream home. The team was knowledgeable, responsive, and made the entire process so easy. I truly felt supported.",
+    img: "https://picsum.photos/seed/person-1/800/800"
+  },
+  {
+    name: "Sarah Jenkins",
+    role: "Interior Designer",
+    quote: "The attention to detail in their architectural designs is simply unmatched. As a designer, I appreciate the clean lines and functional spaces they create. It's rare to find a developer that truly understands modern luxury.",
+    img: "https://picsum.photos/seed/person-2/800/800"
+  },
+  {
+    name: "Michael Chen",
+    role: "Architect",
+    quote: "Living sets a new standard for modern housing. Their commitment to sustainable materials and innovative construction techniques is inspiring. Every project they undertake is a masterpiece of contemporary architecture.",
+    img: "https://picsum.photos/seed/person-3/800/800"
+  },
+  {
+    name: "Elena Rodriguez",
+    role: "Homeowner",
+    quote: "I never thought I'd find a home that perfectly matched my lifestyle until I discovered Living. The process was transparent, and the result exceeded my expectations. I'm proud to live in such a beautifully designed space.",
+    img: "https://picsum.photos/seed/person-4/800/800"
+  }
+];
+
 const Testimonials = () => {
+  const [current, setCurrent] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const next = () => {
+    const nextIdx = (current + 1) % testimonialSlides.length;
+    
+    gsap.to([contentRef.current, imageRef.current], {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      onComplete: () => {
+        setCurrent(nextIdx);
+        gsap.to([contentRef.current, imageRef.current], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out"
+        });
+      }
+    });
+  };
+
+  const prev = () => {
+    const prevIdx = (current - 1 + testimonialSlides.length) % testimonialSlides.length;
+    
+    gsap.to([contentRef.current, imageRef.current], {
+      opacity: 0,
+      y: -20,
+      duration: 0.5,
+      onComplete: () => {
+        setCurrent(prevIdx);
+        gsap.to([contentRef.current, imageRef.current], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out"
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    const timer = setInterval(next, 6000);
+    return () => clearInterval(timer);
+  }, [current]);
+
   return (
     <section className="section-padding bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -452,28 +694,34 @@ const Testimonials = () => {
         </h2>
 
         <div className="flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1">
+          <div ref={contentRef} className="flex-1">
             <div className="mb-8">
-              <h4 className="text-lg font-bold mb-1">Gregg Bergstrom</h4>
-              <p className="text-sm text-luxury-gray uppercase tracking-widest">Marketing Executive</p>
+              <h4 className="text-lg font-bold mb-1">{testimonialSlides[current].name}</h4>
+              <p className="text-sm text-luxury-gray uppercase tracking-widest">{testimonialSlides[current].role}</p>
             </div>
-            <p className="text-2xl md:text-3xl font-light leading-relaxed mb-12">
-              "Working with Living was a fantastic experience from start to finish. They listened to exactly what I wanted, and within a few short weeks, I found my dream home. The team was knowledgeable, responsive, and made the entire process so easy. I truly felt supported."
+            <p className="text-2xl md:text-3xl font-light leading-relaxed mb-12 min-h-[200px]">
+              "{testimonialSlides[current].quote}"
             </p>
             <div className="flex space-x-4">
-              <button className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center hover:bg-luxury-ink hover:text-white transition-all">
+              <button 
+                onClick={prev}
+                className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center hover:bg-luxury-ink hover:text-white transition-all"
+              >
                 <ChevronLeft size={20} />
               </button>
-              <button className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center hover:bg-luxury-ink hover:text-white transition-all">
+              <button 
+                onClick={next}
+                className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center hover:bg-luxury-ink hover:text-white transition-all"
+              >
                 <ChevronRight size={20} />
               </button>
             </div>
           </div>
-          <div className="flex-1 w-full">
-            <div className="aspect-square rounded-[32px] overflow-hidden">
+          <div ref={imageRef} className="flex-1 w-full">
+            <div className="aspect-square rounded-[32px] overflow-hidden shadow-2xl">
               <img 
-                src="https://picsum.photos/seed/person-1/800/800" 
-                alt="Testimonial" 
+                src={testimonialSlides[current].img} 
+                alt={testimonialSlides[current].name} 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -485,72 +733,466 @@ const Testimonials = () => {
   );
 };
 
-const PropertyListing = () => {
-  const properties = [
-    { name: 'EcoSerene Haven Residences', price: '$350,000', beds: 3, baths: 2, sqft: 1400, img: 'https://picsum.photos/seed/prop1/800/600' },
-    { name: 'Luxe Haven Residences', price: '$420,000', beds: 4, baths: 2, sqft: 2000, img: 'https://picsum.photos/seed/prop2/800/600' },
-    { name: 'Urban Oasis Apartments', price: '$510,000', beds: 3, baths: 2, sqft: 1800, img: 'https://picsum.photos/seed/prop3/800/600' },
-  ];
+const PropertyListing = ({ onPropertyClick }: { onPropertyClick: (prop: Property) => void }) => {
+  const [filters, setFilters] = useState({
+    priceRange: 'all',
+    beds: 'all',
+    baths: 'all'
+  });
+
+  const parsePrice = (priceStr: string) => {
+    return parseInt(priceStr.replace(/[^0-9]/g, ''));
+  };
+
+  const filteredProperties = properties.filter(prop => {
+    const price = parsePrice(prop.price);
+    
+    // Price Filter
+    let priceMatch = true;
+    if (filters.priceRange === 'under-100k') priceMatch = price < 100000;
+    else if (filters.priceRange === '100k-500k') priceMatch = price >= 100000 && price <= 500000;
+    else if (filters.priceRange === 'over-500k') priceMatch = price > 500000;
+
+    // Beds Filter
+    let bedsMatch = true;
+    if (filters.beds !== 'all') {
+      bedsMatch = prop.beds >= parseInt(filters.beds);
+    }
+
+    // Baths Filter
+    let bathsMatch = true;
+    if (filters.baths !== 'all') {
+      bathsMatch = prop.baths >= parseInt(filters.baths);
+    }
+
+    return priceMatch && bedsMatch && bathsMatch;
+  });
 
   return (
     <section className="section-padding bg-luxury-beige">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-16">
-          <h2 className="text-4xl md:text-5xl font-medium max-w-md leading-tight">
-            So, what kind of home do you want to realize?
-          </h2>
-          <p className="text-luxury-gray max-w-xs text-sm mt-6 md:mt-0">
-            Every corner of serenity beckons you to unwind, relax, and embrace the beauty of nature.
-          </p>
+        <div className="flex flex-col md:flex-row items-end justify-between mb-12">
+          <div className="max-w-md">
+            <h2 className="text-4xl md:text-5xl font-medium leading-tight mb-4">
+              So, what kind of home do you want to realize?
+            </h2>
+            <p className="text-luxury-gray text-sm">
+              Every corner of serenity beckons you to unwind, relax, and embrace the beauty of nature.
+            </p>
+          </div>
+          
+          {/* Filter Bar */}
+          <div className="mt-8 md:mt-0 flex flex-wrap gap-4">
+            <div className="flex flex-col space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-luxury-gray">Price Range</label>
+              <select 
+                value={filters.priceRange}
+                onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
+                className="bg-white border border-black/5 rounded-full px-6 py-3 text-sm focus:outline-none focus:border-luxury-ink transition-colors appearance-none cursor-pointer min-w-[160px]"
+              >
+                <option value="all">All Prices</option>
+                <option value="under-100k">Under $100,000</option>
+                <option value="100k-500k">$100,000 - $500,000</option>
+                <option value="over-500k">Over $500,000</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-luxury-gray">Bedrooms</label>
+              <select 
+                value={filters.beds}
+                onChange={(e) => setFilters({ ...filters, beds: e.target.value })}
+                className="bg-white border border-black/5 rounded-full px-6 py-3 text-sm focus:outline-none focus:border-luxury-ink transition-colors appearance-none cursor-pointer min-w-[120px]"
+              >
+                <option value="all">Any Beds</option>
+                <option value="1">1+ Bed</option>
+                <option value="2">2+ Beds</option>
+                <option value="3">3+ Beds</option>
+                <option value="4">4+ Beds</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-luxury-gray">Bathrooms</label>
+              <select 
+                value={filters.baths}
+                onChange={(e) => setFilters({ ...filters, baths: e.target.value })}
+                className="bg-white border border-black/5 rounded-full px-6 py-3 text-sm focus:outline-none focus:border-luxury-ink transition-colors appearance-none cursor-pointer min-w-[120px]"
+              >
+                <option value="all">Any Baths</option>
+                <option value="1">1+ Bath</option>
+                <option value="2">2+ Baths</option>
+                <option value="3">3+ Baths</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {properties.map((prop, i) => (
-            <div key={i} className="luxury-card group">
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img 
-                  src={prop.img} 
-                  alt={prop.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold text-white">
-                  Featured
+        {filteredProperties.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {filteredProperties.map((prop, i) => (
+              <div key={prop.id} className="luxury-card group cursor-pointer" onClick={() => onPropertyClick(prop)}>
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img 
+                    src={prop.img} 
+                    alt={prop.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold text-white">
+                    Featured
+                  </div>
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    <button className="bg-white text-luxury-ink px-6 py-3 rounded-full text-sm font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      View Details
+                    </button>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                  <button className="bg-white text-luxury-ink px-6 py-3 rounded-full text-sm font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    View Details
-                  </button>
+                <div className="p-6">
+                  <h3 className="text-xl font-medium mb-4">{prop.name}</h3>
+                  <div className="flex items-center space-x-6 text-luxury-gray text-xs font-bold uppercase tracking-widest mb-6">
+                    <div className="flex items-center space-x-2">
+                      <Bed size={14} />
+                      <span>{prop.beds} Bed</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Bath size={14} />
+                      <span>{prop.baths} Bath</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Maximize size={14} />
+                      <span>{prop.sqft} sq</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between pt-6 border-t border-black/5">
+                    <span className="text-2xl font-medium tracking-tighter">{prop.price}</span>
+                    <button className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-luxury-ink group-hover:text-white transition-all">
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-medium mb-4">{prop.name}</h3>
-                <div className="flex items-center space-x-6 text-luxury-gray text-xs font-bold uppercase tracking-widest mb-6">
-                  <div className="flex items-center space-x-2">
-                    <Bed size={14} />
-                    <span>{prop.beds} Bed</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Bath size={14} />
-                    <span>{prop.baths} Bath</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Maximize size={14} />
-                    <span>{prop.sqft} sq</span>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mb-6">
+              <Search size={32} className="text-luxury-gray opacity-30" />
+            </div>
+            <h3 className="text-2xl font-medium mb-2">No properties found</h3>
+            <p className="text-luxury-gray max-w-xs">Try adjusting your filters to find more architectural masterpieces.</p>
+            <button 
+              onClick={() => setFilters({ priceRange: 'all', beds: 'all', baths: 'all' })}
+              className="mt-8 text-sm font-bold uppercase tracking-widest underline underline-offset-8 hover:text-luxury-gray transition-colors"
+            >
+              Clear all filters
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+const PropertyDetail = ({ property, onHomeClick }: { property: Property, onHomeClick: () => void }) => {
+  const detailRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const ctx = gsap.context(() => {
+      gsap.from(".detail-reveal", {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: "power3.out"
+      });
+    }, detailRef);
+    return () => ctx.revert();
+  }, [property]);
+
+  return (
+    <div ref={detailRef} className="bg-[#F8F9FA] pt-32 pb-20">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+        {/* Gallery Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-6 mb-16 detail-reveal">
+          <div className="rounded-[24px] overflow-hidden shadow-lg group">
+            <img 
+              src={property.gallery[0]} 
+              alt={property.name} 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          <div className="flex flex-col gap-6">
+            <div className="flex-1 rounded-[24px] overflow-hidden shadow-lg group">
+              <img 
+                src={property.gallery[1]} 
+                alt={property.name} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="flex-1 rounded-[24px] overflow-hidden shadow-lg group">
+              <img 
+                src={property.gallery[2]} 
+                alt={property.name} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-16">
+          <div className="space-y-12">
+            {/* Title & Overview */}
+            <div className="detail-reveal">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
+                <div>
+                  <h1 className="text-5xl font-bold mb-4">{property.name}</h1>
+                  <div className="flex items-center space-x-4 text-luxury-gray">
+                    <div className="flex items-center space-x-1">
+                      <MapPin size={18} />
+                      <span className="text-sm">{property.location}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Star size={18} className="fill-yellow-400 text-yellow-400" />
+                      <span className="font-bold">{property.rating.toFixed(1)}</span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-6 border-t border-black/5">
-                  <span className="text-2xl font-medium tracking-tighter">{prop.price}</span>
-                  <button className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-luxury-ink group-hover:text-white transition-all">
-                    <ArrowRight size={18} />
-                  </button>
+                <div className="text-right">
+                  <span className="text-4xl font-bold text-luxury-ink">{property.price}</span>
+                  <span className="text-luxury-gray ml-2 text-sm uppercase tracking-widest font-bold">USD</span>
                 </div>
               </div>
             </div>
-          ))}
+
+            {/* Description */}
+            <div className="detail-reveal">
+              <h3 className="text-lg font-bold mb-4">Description:</h3>
+              <p className="text-luxury-gray leading-relaxed max-w-[700px]">
+                {property.description}
+              </p>
+            </div>
+
+            {/* Amenities */}
+            <div className="detail-reveal">
+              <div className="bg-white p-8 rounded-[24px] border border-black/5 shadow-sm">
+                <h3 className="text-lg font-bold mb-8">Amenities</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 gap-x-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Bed size={20} />
+                    </div>
+                    <span className="text-sm font-medium">{property.beds} Beds</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Bath size={20} />
+                    </div>
+                    <span className="text-sm font-medium">{property.baths} Baths</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Maximize size={20} />
+                    </div>
+                    <span className="text-sm font-medium">{property.sqft.toLocaleString()} sq ft</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Cigarette size={20} />
+                    </div>
+                    <span className="text-sm font-medium">Smoking Area</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Utensils size={20} />
+                    </div>
+                    <span className="text-sm font-medium">Kitchen</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Wind size={20} />
+                    </div>
+                    <span className="text-sm font-medium">Balcony</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Wifi size={20} />
+                    </div>
+                    <span className="text-sm font-medium">Wifi</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-lg bg-luxury-beige flex items-center justify-center text-luxury-ink">
+                      <Car size={20} />
+                    </div>
+                    <span className="text-sm font-medium">Parking Area</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Areas & Lot */}
+            <div className="detail-reveal">
+              <h3 className="text-lg font-bold mb-6">Areas & Lot</h3>
+              <div className="bg-white rounded-[24px] border border-black/5 overflow-hidden shadow-sm">
+                <div className="divide-y divide-black/5">
+                  <div className="flex justify-between p-6">
+                    <span className="text-luxury-gray font-medium">Status</span>
+                    <span className="font-bold">{property.status}</span>
+                  </div>
+                  <div className="flex justify-between p-6">
+                    <span className="text-luxury-gray font-medium">Location</span>
+                    <span className="font-bold">{property.location}</span>
+                  </div>
+                  <div className="flex justify-between p-6">
+                    <span className="text-luxury-gray font-medium">Living Space</span>
+                    <span className="font-bold">{property.sqft.toLocaleString()} sq ft</span>
+                  </div>
+                  <div className="flex justify-between p-6">
+                    <span className="text-luxury-gray font-medium">MLS ID</span>
+                    <span className="font-bold">{property.mlsId}</span>
+                  </div>
+                  <div className="flex justify-between p-6">
+                    <span className="text-luxury-gray font-medium">Type</span>
+                    <span className="font-bold">{property.type}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sidebar Agent Card */}
+          <div className="detail-reveal">
+            <div className="sticky top-32 space-y-8">
+              <div className="bg-white p-8 rounded-[32px] border border-black/5 shadow-xl shadow-black/5">
+                <div className="flex items-center space-x-4 mb-8">
+                  <div className="w-16 h-16 rounded-full overflow-hidden">
+                    <img src={property.agent.img} alt={property.agent.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">{property.agent.name}</h4>
+                    <p className="text-sm text-luxury-gray">{property.agent.email}</p>
+                  </div>
+                </div>
+                
+                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-luxury-gray mb-2">Full Name</label>
+                    <input type="text" placeholder="Jone Doe" className="w-full bg-[#F8F9FA] border border-black/5 rounded-xl p-4 text-sm focus:outline-none focus:border-luxury-ink transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-luxury-gray mb-2">Email Address</label>
+                    <input type="email" placeholder="yourmail@gmail.com" className="w-full bg-[#F8F9FA] border border-black/5 rounded-xl p-4 text-sm focus:outline-none focus:border-luxury-ink transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-luxury-gray mb-2">Phone</label>
+                    <input type="tel" placeholder="+880" className="w-full bg-[#F8F9FA] border border-black/5 rounded-xl p-4 text-sm focus:outline-none focus:border-luxury-ink transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-luxury-gray mb-2">Message</label>
+                    <textarea rows={4} placeholder="Write here..." className="w-full bg-[#F8F9FA] border border-black/5 rounded-xl p-4 text-sm focus:outline-none focus:border-luxury-ink transition-colors resize-none"></textarea>
+                  </div>
+                  <button className="w-full bg-luxury-ink text-white py-4 rounded-full font-bold hover:shadow-lg transition-all">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Recommended Properties */}
+        <div className="mt-32 detail-reveal">
+          <div className="flex flex-col items-center text-center mb-16">
+            <span className="bg-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-black/5 mb-4">Property List</span>
+            <h2 className="text-4xl md:text-5xl font-medium">Recommend More Property</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {properties.map((prop, i) => (
+              <div key={i} className="luxury-card group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img 
+                    src={prop.img} 
+                    alt={prop.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold text-white">
+                    For Buy
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="text-xl font-bold mb-2">{prop.price}</div>
+                  <h3 className="text-lg font-medium mb-4">{prop.name}</h3>
+                  <div className="flex items-center space-x-2 text-luxury-gray text-xs mb-6">
+                    <MapPin size={14} />
+                    <span>{prop.location}</span>
+                  </div>
+                  <div className="flex items-center space-x-6 text-luxury-gray text-xs font-bold uppercase tracking-widest pt-6 border-t border-black/5">
+                    <div className="flex items-center space-x-2">
+                      <Bed size={14} />
+                      <span>{prop.beds} Beds</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Bath size={14} />
+                      <span>{prop.baths} Baths</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Maximize size={14} />
+                      <span>{prop.sqft} sq</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center mt-12">
+            <button onClick={onHomeClick} className="bg-luxury-ink text-white px-10 py-4 rounded-full text-sm font-bold flex items-center space-x-2 hover:shadow-lg transition-all">
+              <span>Explore all Property</span>
+              <ArrowRight size={18} />
+            </button>
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Newsletter Section */}
+      <section className="mt-32 relative h-[600px] flex items-center justify-center overflow-hidden">
+        <img 
+          src="https://picsum.photos/seed/newsletter/1920/1080" 
+          alt="Newsletter" 
+          className="absolute inset-0 w-full h-full object-cover"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="relative z-10 text-center text-white px-6 max-w-3xl">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6">Stay Updated on Latest Property</h2>
+          <p className="text-lg opacity-80 mb-12">Never miss a beat and stay update</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="w-full sm:w-80 bg-white rounded-full py-4 px-8 text-luxury-ink focus:outline-none"
+            />
+            <button className="w-full sm:w-auto bg-luxury-ink text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-luxury-ink transition-all">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom Banner Image */}
+      <div className="w-full h-[400px] overflow-hidden">
+        <img 
+          src="https://picsum.photos/seed/footer-banner/1920/600" 
+          alt="Footer Banner" 
+          className="w-full h-full object-cover"
+          referrerPolicy="no-referrer"
+        />
+      </div>
+    </div>
   );
 };
 
@@ -679,6 +1321,7 @@ const Footer = () => {
 
 export default function App() {
   const mainRef = useRef<HTMLDivElement>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     // Initialize Lenis smooth scrolling
@@ -730,22 +1373,36 @@ export default function App() {
       ctx.revert();
       lenis.destroy();
     };
-  }, []);
+  }, [selectedProperty]);
+
+  const handleHomeClick = () => {
+    setSelectedProperty(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <div ref={mainRef} className="min-h-screen">
+    <div ref={mainRef} className="min-h-screen bg-luxury-beige font-sans text-luxury-ink selection:bg-luxury-ink selection:text-white">
       <ScrollProgress />
       <BackToTop />
-      <Navbar />
-      <main>
-        <Hero />
-        <Stats />
-        <Showcase />
-        <Categories />
-        <Testimonials />
-        <PropertyListing />
-        <FAQ />
-      </main>
+      <Navbar onHomeClick={handleHomeClick} />
+      
+      {selectedProperty ? (
+        <PropertyDetail 
+          property={selectedProperty} 
+          onHomeClick={handleHomeClick} 
+        />
+      ) : (
+        <main>
+          <Hero />
+          <Stats />
+          <Showcase />
+          <Categories />
+          <Testimonials />
+          <PropertyListing onPropertyClick={(prop) => setSelectedProperty(prop)} />
+          <FAQ />
+        </main>
+      )}
+      
       <Footer />
     </div>
   );
