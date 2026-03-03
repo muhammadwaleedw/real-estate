@@ -354,6 +354,95 @@ const Categories = () => {
   );
 };
 
+const Showcase = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Staggered reveal for cards
+      gsap.from(".showcase-card", {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".showcase-grid",
+          start: "top 80%",
+        }
+      });
+
+      // Image scale animation
+      gsap.from(".showcase-img", {
+        scale: 1.05,
+        duration: 1.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".showcase-grid",
+          start: "top 80%",
+        }
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  const items = [
+    { id: '01', title: 'Luxury Living', desc: 'Breathtaking city views, sleek design, and modern conveniences at your doorstep. These homes offer spacious.', img: 'https://picsum.photos/seed/arch1/800/1000' },
+    { id: '02', title: 'Minimalist Haven', desc: 'Step into a world where elegance and ease come together in perfect harmony. Each home is designed with high-end finishes and ample living spaces.', img: 'https://picsum.photos/seed/arch2/800/1000' },
+    { id: '03', title: 'Discover Modern', desc: 'This property is crafted to suit your unique lifestyle with top-tier amenities, and stunning architectural details.', img: 'https://picsum.photos/seed/arch3/800/1000' },
+  ];
+
+  return (
+    <section ref={sectionRef} className="section-padding bg-[#F5F5F3]">
+      <div className="max-w-7xl mx-auto">
+        {/* Top Layout */}
+        <div className="flex flex-col md:flex-row items-start justify-between mb-20">
+          <h2 className="text-5xl md:text-6xl font-medium leading-[1.1] tracking-tight mb-8 md:mb-0">
+            We are Here <br /> for your need
+          </h2>
+          <div className="max-w-[420px]">
+            <p className="text-luxury-gray text-sm leading-relaxed mb-8">
+              Enjoy a sophisticated lifestyle with breathtaking city views, sleek design, and modern conveniences at your doorstep. These homes offer spacious, open layouts filled with natural light.
+            </p>
+            <button className="bg-luxury-ink text-white px-10 py-4 rounded-full text-sm font-bold hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              See More
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom Layout - 3 Card Grid */}
+        <div className="showcase-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1.2fr_1fr] gap-8 items-end">
+          {items.map((item, i) => (
+            <div 
+              key={item.id} 
+              className={cn(
+                "showcase-card group flex flex-col",
+                i === 1 ? "lg:mb-0" : "lg:mb-12" // Center card featured look
+              )}
+            >
+              <div className="relative rounded-[28px] overflow-hidden mb-8 shadow-sm group-hover:shadow-xl group-hover:-translate-y-2 transition-all duration-500">
+                <img 
+                  src={item.img} 
+                  alt={item.title} 
+                  className="showcase-img w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-4xl font-bold tracking-tighter mb-4 opacity-10 group-hover:opacity-100 transition-opacity duration-500">{item.id}</span>
+                <h3 className="text-2xl font-medium mb-3">{item.title}</h3>
+                <p className="text-sm text-luxury-gray leading-relaxed max-w-[300px]">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Testimonials = () => {
   return (
     <section className="section-padding bg-white overflow-hidden">
@@ -651,6 +740,7 @@ export default function App() {
       <main>
         <Hero />
         <Stats />
+        <Showcase />
         <Categories />
         <Testimonials />
         <PropertyListing />
