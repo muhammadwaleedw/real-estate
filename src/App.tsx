@@ -316,7 +316,7 @@ const Hero = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Fade up animations
+      // Fade up animations - only run once on mount
       gsap.from(".hero-reveal", {
         y: 60,
         opacity: 0,
@@ -324,10 +324,17 @@ const Hero = () => {
         stagger: 0.2,
         ease: "power4.out",
       });
+    }, heroRef);
 
-      // Initial slide state
+    return () => ctx.revert();
+  }, []); // Empty dependency array ensures this only runs once
+
+  useEffect(() => {
+    // Initial slide state setup
+    const ctx = gsap.context(() => {
       slideRefs.current.forEach((slide, i) => {
-        if (i !== 0) gsap.set(slide, { opacity: 0 });
+        if (i !== currentSlide) gsap.set(slide, { opacity: 0 });
+        else gsap.set(slide, { opacity: 1 });
       });
     }, heroRef);
 
@@ -384,7 +391,7 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="hero-reveal relative w-full h-[500px] md:h-[800px] rounded-[40px] overflow-hidden shadow-2xl">
+        <div className="hero-reveal relative w-full h-[500px] rounded-[40px] overflow-hidden shadow-2xl">
           {heroSlides.map((slide, i) => (
             <div 
               key={i}
